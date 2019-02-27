@@ -1,2 +1,2 @@
-# ReactNativeApp
-React native solution part. For players.
+# rpgHelper
+Application to help people to play to tabletop rpg
