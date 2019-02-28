@@ -29,3 +29,10 @@ export const hourglassLauched = () => {
         type: TYPES.RUN_HOURGLASS
     };
 };
+
+export const categoryChangeSelected = (key) => {
+    return {
+        type: TYPES.CHANGE_CATEGORY_SELECTED,
+        payload: key
+    };
+};
