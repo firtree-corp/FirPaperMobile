@@ -6,7 +6,7 @@ import { withTheme } from 'react-native-paper';
 import {
     dicesThrew,
     dicesChangeType,
-} from '../actions';
+} from '../../actions';
 
 let { width } = Dimensions.get('window');
 
@@ -95,7 +95,7 @@ class Dice extends React.Component {
         return (
             <View style={styles.buttonContainer}>
                 <Button
-                    icon={require('../../assets/throwDices.png')}
+                    icon={require('../../../assets/throwDices.png')}
                     mode="contained"
                     onPress={this.handleThrow}
                     disabled={buttonStatus}>

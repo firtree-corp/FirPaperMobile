@@ -1,18 +1,23 @@
 import * as React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Button } from 'react-native-paper';
 import { connect } from 'react-redux';
 import {
-    hourglassLauched,
-} from '../actions';
+    View,
+    ScrollView,
+    StyleSheet,
+    TextInput,
+} from 'react-native';
+import {
+    withTheme,
+    Text,
+    Divider,
+} from 'react-native-paper';
 
-class Hourglass extends React.Component {
+class CharacterSheetCategory extends React.Component {
 
     render() {
-
         return (
             <View style={styles.container}>
-                
+
             </View>
         );
     }
@@ -20,20 +25,15 @@ class Hourglass extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+        display: 'flex',
         width: '100%',
-        height: '100%',
     },
 });
 
 const mapStateToProps = (state) => {
     return {
-        running: state.hourglass.running,
     };
 };
 
 export default connect(mapStateToProps, {
-    hourglassLauched,
-})(Hourglass);
+})(withTheme(CharacterSheetCategory));

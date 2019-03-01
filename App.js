@@ -4,7 +4,8 @@ import { Provider as StoreProvider } from 'react-redux';
 import { createStore, applyMiddleware, Text } from 'redux';
 import ReduxThunk from 'redux-thunk';
 import reducers from './src/reducers';
-import BottomNavBar from './src/components/bottomNavBar';
+import BottomNavBar from './src/components/NavBar/bottomNavBar';
+import theme from "./styles/theme"
 
 class App extends React.Component {
 
@@ -17,7 +18,9 @@ class App extends React.Component {
 
         return (
             <StoreProvider store={store}>
-                <BottomNavBar />
+                <PaperProvider theme={theme}>
+                    <BottomNavBar />
+                </PaperProvider>
             </StoreProvider>
         );
     }

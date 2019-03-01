@@ -1,15 +1,5 @@
 import TYPES from './types';
 
-export const themeChange = (key, value) => {
-    return {
-        type: TYPES.CHANGE_THEME,
-        payload: {
-            key: key,
-            value: value,
-        }
-    };
-};
-
 export const dicesThrew = (dices) => {
     return {
         type: TYPES.THROW_DICES,
@@ -34,5 +24,16 @@ export const categoryChangeSelected = (key) => {
     return {
         type: TYPES.CHANGE_CATEGORY_SELECTED,
         payload: key
+    };
+};
+
+export const categoryChangeItem = (index, key, value) => {
+    return {
+        type: TYPES.CHANGE_CATEGORY_ITEM,
+        payload: {
+            index: index,
+            key: key,
+            value: value,
+        }
     };
 };

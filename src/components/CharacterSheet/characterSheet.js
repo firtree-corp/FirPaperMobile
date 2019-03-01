@@ -16,7 +16,7 @@ import {
     Divider,
     ProgressBar
 } from 'react-native-paper';
-import { categoryChangeSelected } from '../actions';
+import { categoryChangeSelected } from '../../actions';
 
 let { height } = Dimensions.get('window');
 
@@ -45,10 +45,10 @@ class CharacterSheet extends React.Component {
         });
     }
 
-    handleCategoryPressed = key => {
+    handleCategoryPressed = value => {
         const { categoryChangeSelected } = this.props;
         //clearInterval(this.interval);
-        categoryChangeSelected(key);
+        categoryChangeSelected(value);
         // this.setState({
         //     ProgressBarKey: key,
         // }, () => {
@@ -57,7 +57,7 @@ class CharacterSheet extends React.Component {
     }
 
     renderCategories() {
-        const { sheet } = this.props;
+        const { sheet, theme } = this.props;
         const { ProgressBarKey, ProgressBarValue } = this.state;
 
         return (
@@ -66,12 +66,12 @@ class CharacterSheet extends React.Component {
                     return (
                         <TouchableOpacity
                             key={key}
-                            style={[styles.OpacityCard, ((ProgressBarKey !== -1 && ProgressBarKey !== key) ? {opacity: 0.3} : 0)]}
+                            style={[styles.OpacityCard, ((ProgressBarKey !== -1 && ProgressBarKey !== key) ? { opacity: 0.3 } : 0)]}
                             disabled={(ProgressBarKey === -1 || ProgressBarKey === key) ? false : true}
-                            onPress={() => this.handleCategoryPressed(key)}>
+                            onPress={() => this.handleCategoryPressed(value)}>
                             <Surface key={key} style={styles.card}>
                                 <View key={key} style={styles.cardTitleContainer}>
-                                    <Text>
+                                    <Text style={{ ...styles.textTitle, color: theme.colors.primary }}>
                                         {value}
                                     </Text>
                                 </View>
@@ -79,8 +79,8 @@ class CharacterSheet extends React.Component {
                                 {sheet[value].map((valueI, keyI) => {
                                     return (
                                         <View key={keyI} style={styles.item}>
-                                            <Text key={keyI} style={styles.itemName}>
-                                                {valueI.dimin + (valueI.value ? ": " + valueI.value : '')}
+                                            <Text key={keyI} style={{ ...styles.itemName, color: theme.colors.primary }}>
+                                                {(valueI.dimin ? valueI.dimin : valueI.name) + (valueI.value ? ": " + valueI.value : '')}
                                             </Text>
                                         </View>
                                     );
@@ -94,18 +94,53 @@ class CharacterSheet extends React.Component {
         );
     }
 
+    renderHomeFooter() {
+        return (
+            <View style={styles.footer}>
+                <View style={styles.footerSub}>
+                    <FAB
+                        small
+                        icon="menu"
+                        onPress={() => console.log('Pressed')}
+                    />
+                </View>
+            </View>
+        );
+    }
+
+    renderCategoryFooter() {
+        const { selected, theme } = this.props;
+
+        return (
+            <View style={styles.footer}>
+                <Divider style={styles.footerDivider}/>
+                <View style={styles.footerSub}>
+                    <FAB
+                        small
+                        icon="menu"
+                        onPress={() => console.log('Pressed')}
+                    />
+                    <Text
+                    style={{...styles.footerTitle, color: theme.colors.primary}}>
+                        {selected}
+                    </Text>
+                    <FAB
+                        small
+                        icon="home"
+                        onPress={() => this.handleCategoryPressed('')}
+                    />
+                </View>
+            </View>
+        );
+    }
+
     render() {
         const { selected } = this.props;
 
         return (
             <View style={styles.container}>
-                {(selected === -1) ? this.renderCategories() : <CharacterSheetCategory />}
-                <FAB
-                    style={styles.menuButton}
-                    small
-                    icon="menu"
-                    onPress={() => console.log('Pressed')}
-                />
+                {(!selected) ? this.renderCategories() : <CharacterSheetCategory />}
+                {(!selected) ? this.renderHomeFooter() : this.renderCategoryFooter()}
             </View>
         );
     }
@@ -123,10 +158,24 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginTop: 30,
     },
-    menuButton: {
+    footer: {
+        display: 'flex',
         position: 'absolute',
         bottom: 10,
-        marginLeft: 10,
+        flexDirection: 'column',
+        paddingLeft: 10,
+        paddingRight: 10,
+        width: '100%',
+    },
+    footerSub: {
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'nowrap',
+        justifyContent: 'space-between',
+        width: '100%'
+    },
+    footerDivider: {
+        marginBottom: 5,
     },
     OpacityCard: {
         display: 'flex',
@@ -154,11 +203,17 @@ const styles = StyleSheet.create({
         marginTop: 5,
     },
     itemName: {
-        fontSize: 20,
-        color: '#757575',
+        fontSize: 18,
     },
     progressBar: {
         bottom: 10,
+    },
+    textTitle: {
+        fontWeight: 'bold'
+    },
+    footerTitle: {
+        fontSize: 16,
+        fontWeight: 'bold',
     },
 });
 
