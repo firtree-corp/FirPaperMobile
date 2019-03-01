@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Animated, Easing, Dimensions } from 'react-nati
 import { Button } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { withTheme } from 'react-native-paper';
+import translate from '../../locales/i18n';
 import {
     dicesThrew,
     dicesChangeType,
@@ -95,11 +96,11 @@ class Dice extends React.Component {
         return (
             <View style={styles.buttonContainer}>
                 <Button
-                    icon={require('../../../assets/throwDices.png')}
+                    icon="autorenew"
                     mode="contained"
                     onPress={this.handleThrow}
                     disabled={buttonStatus}>
-                    Lancer !
+                    {translate.i18n('LAUNCH') + ' !'}
                 </Button>
             </View>
         );

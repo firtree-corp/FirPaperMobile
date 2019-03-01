@@ -5,6 +5,7 @@ import { createStore, applyMiddleware, Text } from 'redux';
 import ReduxThunk from 'redux-thunk';
 import reducers from './src/reducers';
 import BottomNavBar from './src/components/NavBar/bottomNavBar';
+import Login from './src/components/Login/login'
 import theme from "./styles/theme"
 
 class App extends React.Component {
@@ -19,7 +20,7 @@ class App extends React.Component {
         return (
             <StoreProvider store={store}>
                 <PaperProvider theme={theme}>
-                    <BottomNavBar />
+                    <Login />
                 </PaperProvider>
             </StoreProvider>
         );

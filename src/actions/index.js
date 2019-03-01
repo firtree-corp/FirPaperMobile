@@ -37,3 +37,9 @@ export const categoryChangeItem = (index, key, value) => {
         }
     };
 };
+
+export const connectUser = () => {
+    return {
+        type: TYPES.CONNECT
+    };
+};

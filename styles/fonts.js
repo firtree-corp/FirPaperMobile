@@ -9,18 +9,8 @@ const fonts = Platform.select({
       'Roboto-Light, Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif',
     thin: 'Roboto-Thin, Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif',
   },
-  ios: {
-    regular: 'Helvetica Neue',
-    medium: 'HelveticaNeue-Medium',
-    light: 'HelveticaNeue-Light',
-    thin: 'HelveticaNeue-Thin',
-  },
-  default: {
-    regular: 'sans-serif',
-    medium: 'sans-serif-medium',
-    light: 'sans-serif-light',
-    thin: 'sans-serif-thin',
-  },
+  ios: { fontFamily: 'Roboto' }, 
+  default: { fontFamily: 'Roboto' },
 });
 
 export default fonts;
