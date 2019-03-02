@@ -1,5 +1,4 @@
 import fonts from './fonts';
-import Color from './colors';
 import color from 'color';
 
 const white = '#FFFFFF';
@@ -9,11 +8,11 @@ const theme = {
     dark: false,
     roundness: 4,
     colors: {
-        primary: Color[0][0],
-        accent: Color[1][0],
-        background: Color[2][0],
+        primary: '#062F4F',
+        accent: '#3a587b',
+        background: '#FFFFFF',
         surface: white,
-        error: '#B82601',
+        error: '#b71c1c',
         text: black,
         disabled: color(black)
             .alpha(0.26)

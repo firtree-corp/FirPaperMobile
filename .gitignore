@@ -59,3 +59,6 @@ typings/
 
 # next.js build output
 .next
+
+# contain api root
+.api_root.js

@@ -5,7 +5,9 @@ const locales = {
     EMAIL: 'Email',
     LAUNCH: 'Launch',
     LOGIN: 'LOGIN',
+    LOGIN_ERROR: 'Bad username or password',
     NAME: 'Name',
+    PARAMETERS: 'Parameters',
     PASSWORD: 'Password',
     USERNAME: 'Username',
 };

@@ -13,29 +13,29 @@ import {
     Divider,
     TextInput,
     FAB,
+    Snackbar
 } from 'react-native-paper';
 import LoginImage from './loginImageComponent';
 import translate from '../../locales/i18n';
 import Flag from 'react-native-flags';
 import BottomNavBar from '../NavBar/bottomNavBar';
 import { connectUser } from '../../actions';
+import languages from '../../locales/LanguageList';
 
 class Login extends React.Component {
 
     state = {
         userName: '',
         password: '',
-        languages: [
-            { translateCode: 'fr', flagCode: 'FR' },
-            { translateCode: 'en', flagCode: 'GB' }
-        ],
+        languages: languages,
         currentLanguage: 'fr',
     }
 
     handleConnection = () => {
         const { connectUser } = this.props;
+        const { userName, password } = this.state;
 
-        connectUser();
+        connectUser(userName, password);
     }
 
     handleUserName = value => {
@@ -45,7 +45,6 @@ class Login extends React.Component {
     }
 
     handlePassword = value => {
-        console.log(value);
         this.setState({
             password: value
         });
@@ -143,9 +142,9 @@ class Login extends React.Component {
     }
 
     render() {
-        const { connect } = this.props;
+        const { token, error, theme } = this.props;
 
-        if (connect == false) {
+        if (!token) {
             return (
                 <LoginImage>
                     <View style={styles.container}>
@@ -154,6 +153,13 @@ class Login extends React.Component {
                         {this.renderConnection()}
                     </View>
                     {this.renderFlags()}
+                    <Snackbar
+                        visible={error}
+                        onDismiss={() => {}}
+                        style={{backgroundColor: theme.colors.error}}
+                    >
+                        {translate.i18n('LOGIN_ERROR')}
+                    </Snackbar>
                 </LoginImage>
             );
         } else {
@@ -224,7 +230,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-        connect: state.user.connected
+        token: state.user.token,
+        error: state.user.error
     };
 };
 

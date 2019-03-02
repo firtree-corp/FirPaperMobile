@@ -5,6 +5,9 @@ const TYPES = {
     CHANGE_CATEGORY_SELECTED: 'change_category_selected',
     CHANGE_CATEGORY_ITEM: 'change_category_item',
     CONNECT: 'connect',
+    CONNECT_SUCCESS: 'connect_success',
+    CONNECT_FAILURE: 'connect_failure',
+    DISABLE_ERROR: 'disable_error',
 };
 
 export default TYPES;

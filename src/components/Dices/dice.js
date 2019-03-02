@@ -81,8 +81,8 @@ class Dice extends React.Component {
         const { value, theme } = this.props;
 
         return (
-            <Animated.View style={[{...styles.diceContainer, borderColor: theme.colors.accent}, { opacity: animationOpacityValue, left: animationLeftValue }]}>
-                <Text style={{...styles.diceValue, color: theme.colors.accent}}>
+            <Animated.View style={[{...styles.diceContainer, borderColor: theme.colors.primary}, { opacity: animationOpacityValue, left: animationLeftValue }]}>
+                <Text style={{...styles.diceValue, color: theme.colors.primary}}>
                     {value}
                 </Text>
             </Animated.View>

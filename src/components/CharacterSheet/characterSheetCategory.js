@@ -27,6 +27,7 @@ class CharacterSheetCategory extends React.Component {
         return (
             <View key={key} style={styles.textContainer}>
                 <TextInput
+                    multiline={true}
                     style={{ ...styles.nameText, color: theme.colors.primary }}
                     value={value.name}
                     onChangeText={(e) => this.handleText(key, 'name', e)} />
@@ -35,6 +36,7 @@ class CharacterSheetCategory extends React.Component {
                 </Text> : <Text></Text>}
                 {(value.value) ?
                     <TextInput
+                        multiline={true}
                         style={{ ...styles.nameText, color: theme.colors.primary }}
                         value={value.value}
                         onChangeText={(e) => this.handleText(key, 'value', e)} />

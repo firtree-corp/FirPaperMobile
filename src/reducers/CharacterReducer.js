@@ -15,7 +15,7 @@ const INITIAL_STATE = {
             {name: 'Intelligence', value: '28', edit: false, delete: false, type: 'number', dimin: 'Int'}
         ],
         Équipements: [
-            {name: 'Balles 9mm', value: '58', edit: true, delete: true, type: 'number', dimin: ''},
+            {name: 'Balles 9mm', value: '5878673', edit: true, delete: true, type: 'number', dimin: ''},
             {name: 'Bâton', value: '', edit: true, delete: true, type: 'text', dimin: ''}
         ],
     },

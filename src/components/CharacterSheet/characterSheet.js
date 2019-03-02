@@ -71,7 +71,9 @@ class CharacterSheet extends React.Component {
                             onPress={() => this.handleCategoryPressed(value)}>
                             <Surface key={key} style={styles.card}>
                                 <View key={key} style={styles.cardTitleContainer}>
-                                    <Text style={{ ...styles.textTitle, color: theme.colors.primary }}>
+                                    <Text
+                                    numberOfLines={1}
+                                    style={{ ...styles.textTitle, color: theme.colors.primary }}>
                                         {value}
                                     </Text>
                                 </View>
@@ -79,7 +81,10 @@ class CharacterSheet extends React.Component {
                                 {sheet[value].map((valueI, keyI) => {
                                     return (
                                         <View key={keyI} style={styles.item}>
-                                            <Text key={keyI} style={{ ...styles.itemName, color: theme.colors.primary }}>
+                                            <Text
+                                            numberOfLines={1}
+                                            key={keyI}
+                                            style={{ ...styles.itemName, color: theme.colors.primary }}>
                                                 {(valueI.dimin ? valueI.dimin : valueI.name) + (valueI.value ? ": " + valueI.value : '')}
                                             </Text>
                                         </View>
@@ -190,6 +195,8 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         elevation: 4,
+        paddingLeft: 2,
+        paddingRight: 2,
     },
     cardTitleContainer: {
         display: 'flex',
