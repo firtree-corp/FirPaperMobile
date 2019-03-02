@@ -113,9 +113,29 @@ class CharacterSheetCategory extends React.Component {
         );
     }
 
-    render() {
+    renderDialog() {
         const { sheet, selected } = this.props;
         const { dialogStatus, deleteKey } = this.state;
+
+        return (
+            <Portal>
+                <Dialog
+                    visible={dialogStatus}
+                    dismissable={false}>
+                    <Dialog.Content>
+                        <Paragraph>{translate.i18n('SURE_TO_DELETE')} : {(sheet[selected][deleteKey]) ? sheet[selected][deleteKey].name : ''}</Paragraph>
+                    </Dialog.Content>
+                    <Dialog.Actions>
+                        <Button onPress={() => this.handleDialogStatus(deleteKey)}>No</Button>
+                        <Button onPress={this.handleDeleteItem}>Yes</Button>
+                    </Dialog.Actions>
+                </Dialog>
+            </Portal>
+        );
+    }
+
+    render() {
+        const { sheet, selected } = this.props;
 
         return (
             <View style={styles.container}>
@@ -132,19 +152,7 @@ class CharacterSheetCategory extends React.Component {
                         );
                     })}
                     {this.renderAddItem()}
-                    <Portal>
-                        <Dialog
-                            visible={dialogStatus}
-                            dismissable={false}>
-                            <Dialog.Content>
-                                <Paragraph>{translate.i18n('SURE_TO_DELETE')} : {(sheet[selected][deleteKey]) ? sheet[selected][deleteKey].name : ''}</Paragraph>
-                            </Dialog.Content>
-                            <Dialog.Actions>
-                                <Button onPress={() => this.handleDialogStatus(deleteKey)}>No</Button>
-                                <Button onPress={this.handleDeleteItem}>Yes</Button>
-                            </Dialog.Actions>
-                        </Dialog>
-                    </Portal>
+                    {this.renderDialog()}
                 </ScrollView>
             </View>
         );

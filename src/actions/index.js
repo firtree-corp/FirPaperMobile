@@ -61,15 +61,24 @@ export const addItem = () => {
     }
 }
 
+export const disableError = () => {
+    return {
+        type: TYPES.DISABLE_ERROR,
+    }
+}
+
+export const triggerLoginLoading = () => {
+    return {
+        type: TYPES.TRIGGER_LOGIN_LOADING
+    }
+}
+
 export const connectUser = (user, password) => {
     return (dispatch) => {
         dispatch({ type: TYPES.CONNECT });
         UserService.logIn({user: user, password: password})
         .then(data => connectUserSuccess(dispatch, data.token))
         .catch(() => {
-            setTimeout(() => {
-                disableError(dispatch);
-            }, 4000);
             connectUserFailure(dispatch);
         });
     };

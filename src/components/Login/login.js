@@ -2,24 +2,24 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import {
     View,
-    ScrollView,
     StyleSheet,
-    Image,
     TouchableOpacity
 } from 'react-native';
 import {
     withTheme,
     Text,
-    Divider,
     TextInput,
     FAB,
-    Snackbar
+    Snackbar,
+    ActivityIndicator,
+    Portal,
+    Dialog,
 } from 'react-native-paper';
 import LoginImage from './loginImageComponent';
 import translate from '../../locales/i18n';
 import Flag from 'react-native-flags';
 import BottomNavBar from '../NavBar/bottomNavBar';
-import { connectUser } from '../../actions';
+import { connectUser, disableError, triggerLoginLoading } from '../../actions';
 import languages from '../../locales/LanguageList';
 
 class Login extends React.Component {
@@ -32,9 +32,10 @@ class Login extends React.Component {
     }
 
     handleConnection = () => {
-        const { connectUser } = this.props;
+        const { connectUser, triggerLoginLoading } = this.props;
         const { userName, password } = this.state;
 
+        triggerLoginLoading();
         connectUser(userName, password);
     }
 
@@ -141,8 +142,25 @@ class Login extends React.Component {
         )
     }
 
+    renderDialog() {
+        const { loginLoading } = this.props;
+
+        return (
+            <Portal>
+                <Dialog
+                style={styles.dialog}
+                    visible={loginLoading}
+                    dismissable={false}>
+                    <Dialog.Content>
+                        <ActivityIndicator animating={true} size='large'/>
+                    </Dialog.Content>
+                </Dialog>
+            </Portal>
+        );
+    }
+
     render() {
-        const { token, error, theme } = this.props;
+        const { token, error, theme, disableError } = this.props;
 
         if (!token) {
             return (
@@ -155,11 +173,13 @@ class Login extends React.Component {
                     {this.renderFlags()}
                     <Snackbar
                         visible={error}
-                        onDismiss={() => {}}
-                        style={{backgroundColor: theme.colors.error}}
+                        onDismiss={disableError}
+                        duration={4000}
+                        style={{ backgroundColor: theme.colors.error }}
                     >
                         {translate.i18n('LOGIN_ERROR')}
                     </Snackbar>
+                    {this.renderDialog()}
                 </LoginImage>
             );
         } else {
@@ -226,15 +246,23 @@ const styles = StyleSheet.create({
         bottom: 5,
         left: 5,
     },
+    dialog: {
+        display: 'flex',
+        width: '30%',
+        marginLeft: '35%',
+    },
 });
 
 const mapStateToProps = (state) => {
     return {
         token: state.user.token,
-        error: state.user.error
+        error: state.user.error,
+        loginLoading: state.user.loginLoading,
     };
 };
 
 export default connect(mapStateToProps, {
-    connectUser
+    connectUser,
+    disableError,
+    triggerLoginLoading
 })(withTheme(Login));

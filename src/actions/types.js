@@ -11,6 +11,7 @@ const TYPES = {
     CHANGE_LANGUAGE: 'change_language',
     DELETE_ITEM: 'delete_item',
     ADD_ITEM: 'add_item',
+    TRIGGER_LOGIN_LOADING: 'trigger_login_loading',
 };
 
 export default TYPES;
