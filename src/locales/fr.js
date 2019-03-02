@@ -10,5 +10,6 @@ const locales = {
     PARAMETERS: 'Paramètres',
     PASSWORD: 'Mot de passe',
     USERNAME: 'Nom d\'utilisateur',
+    VALUE: 'Valeur',
 };
 export default locales;

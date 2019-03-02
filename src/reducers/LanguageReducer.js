@@ -1,15 +1,13 @@
 import TYPES from '../actions/types';
 
 const INITIAL_STATE = {
-    maxTime: 2000,
-    currentTime: 2000,
-    running: false,
+    language: 'fr',
 };
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case TYPES.RUN_HOURGLASS:
-            return { ...state, running: true };
+        case TYPES.CHANGE_LANGUAGE:
+            return { ...state, language: action.payload };
         default:
             return state;
     }

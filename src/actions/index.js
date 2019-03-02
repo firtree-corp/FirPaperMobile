@@ -1,5 +1,6 @@
 import TYPES from './types';
 import UserService from '../services/userService';
+import translate from '../locales/i18n';
 
 export const dicesThrew = (dices) => {
     return {
@@ -39,10 +40,25 @@ export const categoryChangeItem = (index, key, value) => {
     };
 };
 
-const disableError = (dispatch) => {
-    dispatch({
-        type: TYPES.DISABLE_ERROR
-    });
+export const changeLanguage = (mode) => {
+    translate.setLanguage(mode);
+    return {
+        type: TYPES.CHANGE_LANGUAGE,
+        payload: mode
+    };
+}
+
+export const deleteItem = (index) => {
+    return {
+        type: TYPES.DELETE_ITEM,
+        payload: index
+    }
+}
+
+export const addItem = () => {
+    return {
+        type: TYPES.ADD_ITEM,
+    }
 }
 
 export const connectUser = (user, password) => {

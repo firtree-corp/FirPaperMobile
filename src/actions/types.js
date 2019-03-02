@@ -8,6 +8,9 @@ const TYPES = {
     CONNECT_SUCCESS: 'connect_success',
     CONNECT_FAILURE: 'connect_failure',
     DISABLE_ERROR: 'disable_error',
+    CHANGE_LANGUAGE: 'change_language',
+    DELETE_ITEM: 'delete_item',
+    ADD_ITEM: 'add_item',
 };
 
 export default TYPES;

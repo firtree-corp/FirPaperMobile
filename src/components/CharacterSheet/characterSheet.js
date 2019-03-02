@@ -72,24 +72,46 @@ class CharacterSheet extends React.Component {
                             <Surface key={key} style={styles.card}>
                                 <View key={key} style={styles.cardTitleContainer}>
                                     <Text
-                                    numberOfLines={1}
-                                    style={{ ...styles.textTitle, color: theme.colors.primary }}>
+                                        numberOfLines={1}
+                                        style={{ ...styles.textTitle, color: theme.colors.primary }}>
                                         {value}
                                     </Text>
                                 </View>
                                 <Divider />
-                                {sheet[value].map((valueI, keyI) => {
-                                    return (
-                                        <View key={keyI} style={styles.item}>
-                                            <Text
-                                            numberOfLines={1}
-                                            key={keyI}
-                                            style={{ ...styles.itemName, color: theme.colors.primary }}>
-                                                {(valueI.dimin ? valueI.dimin : valueI.name) + (valueI.value ? ": " + valueI.value : '')}
-                                            </Text>
-                                        </View>
-                                    );
-                                })}
+                                <View style={styles.itemContainer}>
+                                    <View style={styles.itemNameContainer}>
+                                        {sheet[value].map((valueI, keyI) => {
+                                            if (valueI.favorite === true) {
+                                                return (
+                                                    <View style={styles.center} key={keyI}>
+                                                        <Text
+                                                            numberOfLines={1}
+                                                            key={keyI}
+                                                            style={{ ...styles.itemName, color: theme.colors.primary }}>
+                                                            {(valueI.dimin ? valueI.dimin : valueI.name)}
+                                                        </Text>
+                                                    </View>
+                                                );
+                                            }
+                                        })}
+                                    </View>
+                                    <View style={styles.itemValueContainer}>
+                                        {sheet[value].map((valueI, keyI) => {
+                                            if (valueI.favorite === true) {
+                                                return (
+                                                    <View style={styles.center} key={keyI}>
+                                                        <Text
+                                                            key={keyI}
+                                                            numberOfLines={1}
+                                                            style={{ ...styles.itemName, color: theme.colors.primary }}>
+                                                            {valueI.value}
+                                                        </Text>
+                                                    </View>
+                                                );
+                                            }
+                                        })}
+                                    </View>
+                                </View>
                             </Surface>
                             {(ProgressBarKey == key) ? <ProgressBar style={styles.progressBar} progress={ProgressBarValue} /> : <Text></Text>}
                         </TouchableOpacity>
@@ -101,7 +123,7 @@ class CharacterSheet extends React.Component {
 
     renderHomeFooter() {
         return (
-            <View style={styles.footer}>
+            <View style={styles.homeFooter}>
                 <View style={styles.footerSub}>
                     <FAB
                         small
@@ -117,8 +139,8 @@ class CharacterSheet extends React.Component {
         const { selected, theme } = this.props;
 
         return (
-            <View style={styles.footer}>
-                <Divider style={styles.footerDivider}/>
+            <View style={styles.categoryFooter}>
+                <Divider style={styles.footerDivider} />
                 <View style={styles.footerSub}>
                     <FAB
                         small
@@ -126,7 +148,7 @@ class CharacterSheet extends React.Component {
                         onPress={() => console.log('Pressed')}
                     />
                     <Text
-                    style={{...styles.footerTitle, color: theme.colors.primary}}>
+                        style={{ ...styles.footerTitle, color: theme.colors.primary }}>
                         {selected}
                     </Text>
                     <FAB
@@ -163,7 +185,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginTop: 30,
     },
-    footer: {
+    homeFooter: {
         display: 'flex',
         position: 'absolute',
         bottom: 10,
@@ -171,6 +193,14 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         paddingRight: 10,
         width: '100%',
+    },
+    categoryFooter: {
+        display: 'flex',
+        width: '100%',
+        height: '10%',
+        flexDirection: 'column',
+        paddingLeft: 10,
+        paddingRight: 10,
     },
     footerSub: {
         display: 'flex',
@@ -197,20 +227,44 @@ const styles = StyleSheet.create({
         elevation: 4,
         paddingLeft: 2,
         paddingRight: 2,
+        paddingBottom: 2,
     },
     cardTitleContainer: {
         display: 'flex',
         width: '100%',
+        height: '10%',
         flexDirection: 'row',
         justifyContent: 'center',
-        paddingTop: 3,
-        paddingBottom: 3,
+        paddingTop: '3%',
     },
-    item: {
-        marginTop: 5,
+    itemContainer: {
+        display: 'flex',
+        width: '100%',
+        height: '90%',
+        paddingTop: 5,
+        paddingBottom: 5,
+        flexDirection: 'row',
+        flexWrap: 'nowrap',
+        overflow: 'hidden',
+    },
+    itemNameContainer: {
+        display: 'flex',
+        width: '50%',
+        height: '100%',
+        flexDirection: 'column',
+        borderRightWidth: 1,
+        borderRightColor: '#DDDDDD',
+        paddingRight: 2
+    },
+    itemValueContainer: {
+        display: 'flex',
+        width: '50%',
+        height: '100%',
+        flexDirection: 'column',
+        paddingLeft: 2
     },
     itemName: {
-        fontSize: 18,
+        fontSize: 14,
     },
     progressBar: {
         bottom: 10,
@@ -222,6 +276,12 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
     },
+    center: {
+        display: 'flex',
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'center',
+    }
 });
 
 const mapStateToProps = (state) => {
