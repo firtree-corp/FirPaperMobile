@@ -7,15 +7,33 @@ import {
 } from 'react-native';
 import {
     withTheme,
-    Text,
     Divider,
     TextInput,
     IconButton,
+    Dialog,
+    Paragraph,
+    Button,
+    Portal,
 } from 'react-native-paper';
 import { categoryChangeSelected, categoryChangeItem, deleteItem, addItem } from '../../actions';
 import translate from '../../locales/i18n';
 
 class CharacterSheetCategory extends React.Component {
+
+    state = {
+        dialogStatus: false,
+        deleteKey: -1,
+    }
+
+    handleDialogStatus = (key) => {
+        const { dialogStatus } = this.state;
+        let newStatus = !dialogStatus;
+
+        this.setState({
+            dialogStatus: newStatus,
+            deleteKey: key
+        });
+    }
 
     handleChangeItem = (index, key, value) => {
         const { categoryChangeItem } = this.props;
@@ -23,10 +41,12 @@ class CharacterSheetCategory extends React.Component {
         categoryChangeItem(index, key, value);
     }
 
-    handleDeleteItem = key => {
+    handleDeleteItem = () => {
         const { deleteItem } = this.props;
+        const { deleteKey } = this.state;
 
-        deleteItem(key);
+        deleteItem(deleteKey);
+        this.handleDialogStatus(-1);
     }
 
     handleAddItem = () => {
@@ -72,7 +92,7 @@ class CharacterSheetCategory extends React.Component {
                     icon="delete-forever"
                     color="#b71c1c"
                     disabled={!value.delete}
-                    onPress={() => this.handleDeleteItem(key)}
+                    onPress={() => this.handleDialogStatus(key)}
                 />
             </View>
         );
@@ -94,7 +114,8 @@ class CharacterSheetCategory extends React.Component {
     }
 
     render() {
-        const { sheet, selected, theme } = this.props;
+        const { sheet, selected } = this.props;
+        const { dialogStatus, deleteKey } = this.state;
 
         return (
             <View style={styles.container}>
@@ -111,6 +132,19 @@ class CharacterSheetCategory extends React.Component {
                         );
                     })}
                     {this.renderAddItem()}
+                    <Portal>
+                        <Dialog
+                            visible={dialogStatus}
+                            dismissable={false}>
+                            <Dialog.Content>
+                                <Paragraph>{translate.i18n('SURE_TO_DELETE')} : {(sheet[selected][deleteKey]) ? sheet[selected][deleteKey].name : ''}</Paragraph>
+                            </Dialog.Content>
+                            <Dialog.Actions>
+                                <Button onPress={() => this.handleDialogStatus(deleteKey)}>No</Button>
+                                <Button onPress={this.handleDeleteItem}>Yes</Button>
+                            </Dialog.Actions>
+                        </Dialog>
+                    </Portal>
                 </ScrollView>
             </View>
         );

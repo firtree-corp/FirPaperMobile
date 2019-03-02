@@ -9,6 +9,7 @@ const locales = {
     NAME: 'Name',
     PARAMETERS: 'Parameters',
     PASSWORD: 'Password',
+    SURE_TO_DELETE: 'Are you sure to delete',
     USERNAME: 'Username',
     VALUE: 'Value',
 };

@@ -9,6 +9,7 @@ const locales = {
     NAME: 'Nom',
     PARAMETERS: 'Paramètres',
     PASSWORD: 'Mot de passe',
+    SURE_TO_DELETE: 'Êtes-vous sûr de vouloir supprimer',
     USERNAME: 'Nom d\'utilisateur',
     VALUE: 'Valeur',
 };
