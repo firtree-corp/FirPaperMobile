@@ -17,13 +17,45 @@ import {
 } from 'react-native-paper';
 import { categoryChangeSelected, categoryChangeItem, deleteItem, addItem } from '../../actions';
 import translate from '../../locales/i18n';
+import BoxDrift from '../Animation/boxDrift';
 
 class CharacterSheetCategory extends React.Component {
+
+    getItemLength = () => {
+        const { sheet, selected } = this.props;
+        let i = 0;
+
+        for (; i < sheet[selected].length; i += 1);
+        return (i);
+    }
 
     state = {
         dialogStatus: false,
         deleteKey: -1,
+        isVisibleTab: Array(this.getItemLength() + 1).fill(false)
     }
+
+    setItemVisible = (key) => {
+        const { isVisibleTab } = this.state;
+        let tmp = [...isVisibleTab];
+
+        if (key == this.getItemLength() + 1)
+            return;
+        tmp[key] = true;
+        this.setState({
+            isVisibleTab: tmp
+        }, () => {
+            setTimeout(() => {
+                this.setItemVisible(key + 1);
+            }, 50);
+        });
+    }
+
+    componentDidMount = () => {
+        setTimeout(() => {
+            this.setItemVisible(0);
+        }, 50);
+    };
 
     handleDialogStatus = (key) => {
         const { dialogStatus } = this.state;
@@ -43,16 +75,36 @@ class CharacterSheetCategory extends React.Component {
 
     handleDeleteItem = () => {
         const { deleteItem } = this.props;
-        const { deleteKey } = this.state;
+        const { deleteKey, isVisibleTab } = this.state;
+        let tmp = [...isVisibleTab];
 
+        tmp.splice(deleteKey, 1);
         deleteItem(deleteKey);
         this.handleDialogStatus(-1);
+        this.setState({
+            isVisibleTab: tmp
+        });
     }
 
     handleAddItem = () => {
         const { addItem } = this.props;
+        const { isVisibleTab } = this.state;
+        let tmp = [...isVisibleTab];
 
+        tmp.push(false);
+        tmp[tmp.length - 1] = tmp[tmp.length - 2];
+        tmp[tmp.length - 2] = false;
         addItem();
+        this.setState({
+            isVisibleTab: tmp
+        }, () => {
+            setTimeout(() => {
+                tmp[tmp.length - 2] = true;
+                this.setState({
+                    isVisibleTab: tmp
+                });
+            }, 50);
+        });
     }
 
     renderInput(value, key) {
@@ -100,16 +152,17 @@ class CharacterSheetCategory extends React.Component {
 
     renderAddItem() {
         const { theme } = this.props;
+        const { isVisibleTab } = this.state;
 
         return (
-            <View style={styles.addItemContainer}>
+            <BoxDrift style={styles.addItemContainer} pose={isVisibleTab[this.getItemLength()] ? "visible" : "hidden"}>
                 <IconButton
                     icon="add"
                     size={32}
                     color={theme.colors.accent}
                     onPress={this.handleAddItem}
                 />
-            </View>
+            </BoxDrift>
         );
     }
 
@@ -126,8 +179,8 @@ class CharacterSheetCategory extends React.Component {
                         <Paragraph>{translate.i18n('SURE_TO_DELETE')} : {(sheet[selected][deleteKey]) ? sheet[selected][deleteKey].name : ''}</Paragraph>
                     </Dialog.Content>
                     <Dialog.Actions>
-                        <Button onPress={() => this.handleDialogStatus(deleteKey)}>No</Button>
-                        <Button onPress={this.handleDeleteItem}>Yes</Button>
+                        <Button onPress={() => this.handleDialogStatus(deleteKey)}>{translate.i18n('NO')}</Button>
+                        <Button onPress={this.handleDeleteItem}>{translate.i18n('YES')}</Button>
                     </Dialog.Actions>
                 </Dialog>
             </Portal>
@@ -136,19 +189,20 @@ class CharacterSheetCategory extends React.Component {
 
     render() {
         const { sheet, selected } = this.props;
+        const { isVisibleTab } = this.state;
 
         return (
             <View style={styles.container}>
                 <ScrollView scrollEnabled={true}>
                     {sheet[selected].map((value, key) => {
                         return (
-                            <View key={key}>
+                            <BoxDrift key={key} pose={isVisibleTab[key] ? "visible" : "hidden"}>
                                 <View style={styles.lineContainer} key={key}>
                                     {this.renderInput(value, key)}
                                     {this.renderOptions(value, key)}
                                 </View>
                                 <Divider style={styles.divider} />
-                            </View>
+                            </BoxDrift>
                         );
                     })}
                     {this.renderAddItem()}

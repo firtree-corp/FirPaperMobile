@@ -17,15 +17,47 @@ import {
     ProgressBar
 } from 'react-native-paper';
 import { categoryChangeSelected } from '../../actions';
+import BoxPop from '../Animation/boxPop';
 
 let { height } = Dimensions.get('window');
 
 class CharacterSheet extends React.Component {
 
+    getSheetLength = () => {
+        const { sheet } = this.props;
+        let i = 0;
+
+        for (; i < Object.keys(sheet).length; i += 1);
+        return (i);
+    }
+
     state = {
         ProgressBarValue: 0.,
         ProgressBarKey: -1,
+        isVisibleTab: Array(this.getSheetLength()).fill(false)
     }
+
+    setItemVisible = (key) => {
+        const { isVisibleTab } = this.state;
+        let tmp = [...isVisibleTab];
+
+        if (key == this.getSheetLength())
+            return;
+        tmp[key] = true;
+        this.setState({
+            isVisibleTab: tmp
+        }, () => {
+            setTimeout(() => {
+                this.setItemVisible(key + 1);
+            }, 50);
+        });
+    }
+
+    componentDidMount = () => {
+        setTimeout(() => {
+            this.setItemVisible(0);
+        }, 50);
+    };
 
     componentWillUnmount() {
         clearInterval(this.interval);
@@ -58,7 +90,7 @@ class CharacterSheet extends React.Component {
 
     renderCategories() {
         const { sheet, theme } = this.props;
-        const { ProgressBarKey, ProgressBarValue } = this.state;
+        const { ProgressBarKey, ProgressBarValue, isVisibleTab } = this.state;
 
         return (
             <ScrollView contentContainerStyle={styles.containerContent}>
@@ -69,50 +101,52 @@ class CharacterSheet extends React.Component {
                             style={[styles.OpacityCard, ((ProgressBarKey !== -1 && ProgressBarKey !== key) ? { opacity: 0.3 } : 0)]}
                             disabled={(ProgressBarKey === -1 || ProgressBarKey === key) ? false : true}
                             onPress={() => this.handleCategoryPressed(value)}>
-                            <Surface key={key} style={styles.card}>
-                                <View key={key} style={styles.cardTitleContainer}>
-                                    <Text
-                                        numberOfLines={1}
-                                        style={{ ...styles.textTitle, color: theme.colors.primary }}>
-                                        {value}
-                                    </Text>
-                                </View>
-                                <Divider />
-                                <View style={styles.itemContainer}>
-                                    <View style={styles.itemNameContainer}>
-                                        {sheet[value].map((valueI, keyI) => {
-                                            if (valueI.favorite === true) {
-                                                return (
-                                                    <View style={styles.center} key={keyI}>
-                                                        <Text
-                                                            numberOfLines={1}
-                                                            key={keyI}
-                                                            style={{ ...styles.itemName, color: theme.colors.primary }}>
-                                                            {(valueI.dimin ? valueI.dimin : valueI.name)}
-                                                        </Text>
-                                                    </View>
-                                                );
-                                            }
-                                        })}
+                            <BoxPop pose={isVisibleTab[key] ? "visible" : "hidden"}>
+                                <Surface key={key} style={styles.card}>
+                                    <View key={key} style={styles.cardTitleContainer}>
+                                        <Text
+                                            numberOfLines={1}
+                                            style={{ ...styles.textTitle, color: theme.colors.primary }}>
+                                            {value}
+                                        </Text>
                                     </View>
-                                    <View style={styles.itemValueContainer}>
-                                        {sheet[value].map((valueI, keyI) => {
-                                            if (valueI.favorite === true) {
-                                                return (
-                                                    <View style={styles.center} key={keyI}>
-                                                        <Text
-                                                            key={keyI}
-                                                            numberOfLines={1}
-                                                            style={{ ...styles.itemName, color: theme.colors.primary }}>
-                                                            {valueI.value}
-                                                        </Text>
-                                                    </View>
-                                                );
-                                            }
-                                        })}
+                                    <Divider />
+                                    <View style={styles.itemContainer}>
+                                        <View style={styles.itemNameContainer}>
+                                            {sheet[value].map((valueI, keyI) => {
+                                                if (valueI.favorite === true) {
+                                                    return (
+                                                        <View style={styles.center} key={keyI}>
+                                                            <Text
+                                                                numberOfLines={1}
+                                                                key={keyI}
+                                                                style={{ ...styles.itemName, color: theme.colors.primary }}>
+                                                                {(valueI.dimin ? valueI.dimin : valueI.name)}
+                                                            </Text>
+                                                        </View>
+                                                    );
+                                                }
+                                            })}
+                                        </View>
+                                        <View style={styles.itemValueContainer}>
+                                            {sheet[value].map((valueI, keyI) => {
+                                                if (valueI.favorite === true) {
+                                                    return (
+                                                        <View style={styles.center} key={keyI}>
+                                                            <Text
+                                                                key={keyI}
+                                                                numberOfLines={1}
+                                                                style={{ ...styles.itemName, color: theme.colors.primary }}>
+                                                                {valueI.value}
+                                                            </Text>
+                                                        </View>
+                                                    );
+                                                }
+                                            })}
+                                        </View>
                                     </View>
-                                </View>
-                            </Surface>
+                                </Surface>
+                            </BoxPop>
                             {(ProgressBarKey == key) ? <ProgressBar style={styles.progressBar} progress={ProgressBarValue} /> : <Text></Text>}
                         </TouchableOpacity>
                     );
